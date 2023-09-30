@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const _ = require("lodash");
 const app = express();
-const port = 3000;
+const port = process.env.PORT;
 const path = require('path');
 const mongoose = require('mongoose');
 mongoose.connect('mongodb+srv://thomas:5OA7xZnGONhxiH6V@cluster0.pqaf5xj.mongodb.net/blog', { useNewUrlParser: true });
