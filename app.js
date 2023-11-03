@@ -17,6 +17,61 @@ app.set('view engine', 'ejs');
 app.use(express.static('./public'));
 
 
+<<<<<<< Updated upstream
+=======
+
+var secret = process.env.SECRET;
+app.use(session({
+  secret: secret,
+  resave: false,
+  saveUninitialized: true,
+  cookie: {}
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+mongoose.connect("mongodb://127.0.0.1:27017/blog", { useNewUrlParser: true });
+
+
+
+const userSchema = new mongoose.Schema({
+
+  username: String,
+  email: String,
+  provider: String,
+  password: String,
+  OAuthId: String,
+  secretMsg: String,
+
+});
+
+// Plugins for mongodb
+
+userSchema.plugin(passportLocalMongoose, {usernameField: "email"});
+userSchema.plugin(findOrCreate);
+
+const User = new mongoose.model('user', userSchema);
+
+passport.use(User.createStrategy());
+
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function (user, done) {
+  done(null, user);
+});
+
+
+
+
+
+
+
+
+>>>>>>> Stashed changes
 const postSchema = {
   postTitle: String,
   postContent: String,
@@ -69,6 +124,53 @@ app.get("/posts/:post", function (req, res) {
   });
 });
 
+<<<<<<< Updated upstream
+=======
+// Login page catch
+
+app.get('/login', function (req, res) {
+  res.render('login', { loginResult: "" });
+});
+
+// Logout request catch 
+
+app.get('/logout', (req, res) => {
+  req.logout((err) => {
+      if (err) { 
+          return err;
+      }
+  });
+  res.redirect('/');
+});
+
+// Login post req catch
+
+app.post('/login', passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/login',
+}));
+
+app.get('/register', function (req, res) {
+  res.render('register', { registerResult: "" });
+});
+
+app.post('/register', (req, res) => {
+  User.register({ email: (req.body.email) }, (req.body.password), function (err, user) {
+      if (err) {
+          console.log(err);
+          res.redirect('/register');
+      } else {
+        User.find({_id: req.user._id, username: {$eq: null}}).then( (foundUser) => {
+          console.log(foundUser);
+        } );
+          passport.authenticate('local')(req, res, function () {
+              res.redirect('/');
+          });
+      }
+  });
+});
+
+>>>>>>> Stashed changes
 app.listen(port, function (req, res) {
   console.log("Runnging your app on port " + port);
 });
