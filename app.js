@@ -17,8 +17,6 @@ app.set('view engine', 'ejs');
 app.use(express.static('./public'));
 
 
-<<<<<<< Updated upstream
-=======
 
 var secret = process.env.SECRET;
 app.use(session({
@@ -71,7 +69,6 @@ passport.deserializeUser(function (user, done) {
 
 
 
->>>>>>> Stashed changes
 const postSchema = {
   postTitle: String,
   postContent: String,
@@ -124,8 +121,6 @@ app.get("/posts/:post", function (req, res) {
   });
 });
 
-<<<<<<< Updated upstream
-=======
 // Login page catch
 
 app.get('/login', function (req, res) {
@@ -170,7 +165,6 @@ app.post('/register', (req, res) => {
   });
 });
 
->>>>>>> Stashed changes
 app.listen(port, function (req, res) {
   console.log("Runnging your app on port " + port);
 });
